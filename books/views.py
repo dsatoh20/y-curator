@@ -16,12 +16,15 @@ from books.insertTag import insert_tag
 from linebots.bot_messages import create_message
 from linebots.views import homepage_link
 
-import json
+import json, os
 from cryptography.fernet import Fernet
-with open('linebots/conf.json', 'r') as f:
-    data = json.load(f)
-fernet = Fernet(data["SECRET_KEY"])
 
+try:
+    with open('linebots/conf.json', 'r') as f:
+        data = json.load(f)
+    fernet = Fernet(data["SECRET_KEY"])
+except:
+    fernet = Fernet(os.environ.get("SECRET_KEY"))
 onerror = "this.onerror=null;this.src='data:image/svg+xml;base64,\
     PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPS\
         IyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkP\
