@@ -1,0 +1,138 @@
+{% load static %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Records</title>
+<link rel="stylesheet" href='{% static "accounts_mobile_css/style.css" %}'/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="header">
+            <button class="header-hamburger hamburger" id="js-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+	    <img class="header-logo" src="/media/homepage_pics/logo.jpg">
+            <a href="{% url 'profile'  %}"><img class="prof-pic" src="{{login_user.icon_image.url}}"></a>
+            <nav>
+                <div class="nav" id="js-nav">
+                    <ul>
+                        <br>
+						<li class="nav-item"><a href="{% url 'books:groups' %}"><input class="main-button" type="image" alt="add_group" src="/media/buttons/main/addgroup.png"></a></li>
+						<li class="nav-item"><a href="{% url 'books:friend' %}"><input class="main-button" type="image" alt="add_friend" src="/media/buttons/main/addfriend.png"></a></li>
+						<li class="nav-item"><a href="{% url 'profile' %}"><input class="main-button" type="image" alt="setting" src="/media/buttons/main/setting.png"></a></li>
+						<li class="nav-item"><a href="{% url 'contact' %}"><input class="main-button" type="image" alt="contact_us" src="/media/buttons/main/contact.png"></a></li>
+						<li class="nav-item"><a href="{% url 'Logout' %}"><input class="main-button" type="image" alt="logout" src="/media/buttons/main/logout.png">
+						</a></li>
+					</ul>
+                </div>
+            </nav>
+        </header>
+        <main class="main">
+            <section>
+                <h3>{{friend}}'s library</h3>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <div class="newposts">
+					{% for item in contents %}
+						<div class="newpost">
+							<div class="group-title-box">
+								<div class="owner-icon-div"><a href="{% url 'records' item.owner.id %}"><img class="owner-icon" src="{{item.owner.icon_image.url}}"></a></div>
+								<div class="group-title"><span>{{item.group.title}}</span></div>
+							</div>
+													
+							<div class="box">
+								<div class="covers">
+									{% if item.genre in bgenre and item.isbn != "https://ndlsearch.ndl.go.jp/thumbnail/.jpg" %}
+									<a href="{% url 'books:chat' item.id %}">
+										<img src={{item.isbn}} alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in bgenre and item.isbn == "https://ndlsearch.ndl.go.jp/thumbnail/.jpg" %}
+									<a href="{% url 'books:chat' item.id %}">
+										<img src={{item.img_path}} alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in pgenre %}
+									<a href="{% url 'papers:chat' item.id%}">
+										<img src="{{item.genre_img}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in mgenre %}
+									<a href="{% url 'movies:chat' item.id %}">
+										<img src="{{item.img_path}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in agenre %}
+									<a href="{% url 'articles:chat' item.id %}">
+										<img src="{{item.genre_img}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% endif %}
+									<div class="mask">
+										<div class="caption">{{item.title}}</div>
+										<br>
+										<div class="caption">score={{item.score}}</div>
+										<div class="caption">comment={{item.chat_count}}</div>
+									</div>
+								</div>
+								<div class="report-box">
+									<p class="report">{{item.report|safe|linebreaksbr}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="date">({{item.pub_date}})</div>
+					{% endfor %}
+				</div>
+            </section>
+
+            <div class="footer record-footer">
+                <div class="footer-page">
+                    <ul class="page-items">
+                        {% if contents.has_previous %}
+                        <div class="page-item"><a href="{% url 'records' login_user.id %}/1">&Lt;</a></div>
+                        <div class="page-item"> <a href="{% url 'records' login_user.id %}/{{contents.previous_page_number}}">&lt;</a></div>
+                        {% else %}
+                        <div class="page-item"><a>&Lt;</a></div>
+                        <div class="page-item"><a>&lt;</a></div>
+                        {% endif %}
+                        <div class="page-item"><a>{{contents.number}}/{{contents.paginator.num_pages}}</a></div>
+                        {% if contents.has_next %}
+                        <div class="page-item"><a href="{% url 'records' login_user.id %}/{{contents.next_page_number}}">&gt;</a></div>
+                        <div class="page-item"><a href="{% url 'records' login_user.id %}/{{contents.paginator.num_pages}}">&Gt;</a></div>
+                        {% else %}
+                        <div class="page-item"><a>&gt;</a></div>
+                        <div class="page-item"><a>&Gt;</a></div>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+			<div class="footer-nav">
+				<ul>
+					<a href="{% url 'home' %}"><img alt="home" src="/media/buttons/footer/home.png"></a>
+					<a href="{% url 'books:post' %}"><img alt="post" src="/media/buttons/footer/post.png"></a>
+					<a class="history" id="js-history"><img alt="history" src="/media/buttons/footer/history.png"></a>
+					<a href="{% url 'records' login_user.id %}"><img alt="library" src="/media/buttons/footer/library.png"></a>					
+				</ul>
+			</div>
+
+
+			<script type="text/javascript" src="/static/accounts_js/script.js"></script>
+
+		</footer>
+    </div>
+</body>
+</html>
+

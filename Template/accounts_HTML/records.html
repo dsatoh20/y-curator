@@ -1,0 +1,155 @@
+{% load static %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Records</title>
+<link rel="stylesheet" href='{% static "accounts_css/style.css" %}'/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="././static/accounts_js/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="flex">
+				<div class="logo"><img alt="logo" src="/media/homepage_pics/logo_zako.png"></div>
+                <div class="header-nav-item"><a href="{% url 'home' %}"><img alt="home" src="/media/buttons/header/home.png"></a></div>
+				<div class="header-nav-item"><a href="{% url 'books:post' %}"><img alt="post" src="/media/buttons/header/post.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'forum' %}"><img alt="forum" src="/media/buttons/header/forum.png"></a></div>
+            	<div class="header-nav-item"><a href="{% url 'books:groups' %}"><img alt="group" src="/media/buttons/header/group.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'records' login_user.id %}"><img alt="portfolio" src="/media/buttons/header/portfolio.png"></a></div>
+                <div class="header-nav-prof">
+                    <a href="{% url 'profile' %}" class="prof-item"><img class="prof-pic" src="{{login_user.icon_image.url}}"></a>
+                </div>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper2 clearfix">
+
+
+        <main class="main">
+            <header class="header-main">
+                <h2>{{friend}}</h2>
+                <div><img src={{ friend.icon_image.url }} alt="profile_picture" align="middle"></div>
+            </header>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="container1-home">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                {% for item in contents %}
+                <div class="newpost">
+                    <div class="group-title"><span>{{item.group.title}}</span></div>                        
+                    <div class="box">
+                        {% if item.genre in bgenre and item.isbn != "https://ndlsearch.ndl.go.jp/thumbnail/.jpg" %}
+                        <a href="{% url 'books:chat' item.id %}">
+                            <img src={{item.isbn}} alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+                        </a>
+                        {% elif item.genre in bgenre and item.isbn == "https://ndlsearch.ndl.go.jp/thumbnail/.jpg" %}
+                        <a href="{% url 'books:chat' item.id %}">
+                            <img src={{item.img_path}} alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+                        </a>
+                        {% elif item.genre in pgenre %}
+                        <a href="{% url 'papers:chat' item.id%}">
+                            <img src="{{item.genre_img}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+                        </a>
+                        {% elif item.genre in mgenre %}
+                        <a href="{% url 'movies:chat' item.id %}">
+                            <img src="{{item.img_path}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+                        </a>
+                        {% elif item.genre in agenre %}
+                        <a href="{% url 'articles:chat' item.id %}">
+                            <img src="{{item.genre_img}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+                        </a>
+                        {% endif %}
+                        <div class="mask">
+                            <div class="caption">{{item.title}}</div>
+                            <div class="caption"><img class="info" src="/media/homepage_pics/info=score.png" alt="score:"><div>{{item.score}}</div></div>
+							<div class="caption"><img class="info" src="/media/homepage_pics/info=comment.png" alt="comment:"><div>{{item.chat_count}}</div></div>
+						</div>
+                    </div>
+                    <div class="report-box">
+                        <a href="{% url 'records' item.owner.id %}"><img class="owner-icon" src="{{item.owner.icon_image.url}}"></a>
+                        <p class="report">{{item.report|safe}}</p>
+                    </div>
+                    <div class="date">({{item.pub_date}})</div>
+                </div>
+                {% endfor %}
+            </div>
+            <br>
+        </main>
+        <div class="footer-page">
+            <div class="page-items">
+                <ul class="pagenation">
+                    {% if contents.has_previous %}
+                    <li class="page-item">
+                        <a href="{% url 'records' login_user.id %}/1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="{% url 'records' login_user.id %}/{{contents.previous_page_number}}">&laquo; prev</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a>&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a>&laquo; prev</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a>
+                            {{contents.number}}/{{contents.paginator.num_pages}}
+                        </a>
+                    </li>
+                    {% if contents.has_next %}
+                    <li class="page-item">
+                        <a href="{% url 'records' login_user.id %}/{{contents.next_page_number}}">
+                            next &raquo;
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="{% url 'records' login_user.id %}/{{contents.paginator.num_pages}}">
+                            last &raquo;
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a>next &raquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a>last &raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer record-footer">
+        <div class="footer-nav">
+            <ul>
+                <a href="{% url 'Logout' %}">logout</a>
+                <p>|</p>
+                <a href="{% url 'contact' %}">contact us</a>
+            </ul>
+        </div>
+        <div class="copyright-info">
+            <p>© 2024 Y | All Rights Reserved</p>
+        </div>
+    </div>
+</body>
+</html>
+

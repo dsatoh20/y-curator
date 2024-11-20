@@ -1,0 +1,70 @@
+{% load static %}
+
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href='{% static "books_mobile_css/style.css" %}'/>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">    
+    <link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <button class="header-hamburger hamburger" id="js-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <img class="header-logo" src="/media/homepage_pics/logo.jpg">
+            <a href="{% url 'profile' %}"><img class="prof-pic" src="{{login_user.icon_image.url}}"></a>
+            <nav>
+                <div class="nav" id="js-nav">
+                    <br>
+                    <ul>
+						<li class="nav-item"><a href="{% url 'books:groups' %}"><input class="main-button" type="image" alt="add_group" src="/media/buttons/main/addgroup.png"></a></li>
+						<li class="nav-item"><a href="{% url 'books:friend' %}"><input class="main-button" type="image" alt="add_friend" src="/media/buttons/main/addfriend.png"></a></li>
+						<li class="nav-item"><a href="{% url 'profile' %}"><input class="main-button" type="image" alt="setting" src="/media/buttons/main/setting.png"></a></li>
+						<li class="nav-item"><a href="{% url 'contact' %}"><input class="main-button" type="image" alt="contact_us" src="/media/buttons/main/contact.png"></a></li>
+						<li class="nav-item"><a href="{% url 'Logout' %}"><input class="main-button" type="image" alt="logout" src="/media/buttons/main/logout.png">
+						</a></li>
+					</ul>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main scroll-bar">
+            <div class="header-main clearfix">{% block header-main %}{% endblock %}</div>
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+
+        </main>
+
+        <footer class="footer">
+            <div class="footer-nav">
+                <ul>
+					<a href="{% url 'home' %}">
+                        <img class="footer-btn" src="/media/buttons/footer/home.png">
+                    </a>
+					<a href="{% url 'papers:post' %}">
+                        <img class="footer-btn" src="/media/buttons/footer/post.png">
+                    </a>
+					<a class="hitory" id="js-history">
+                        <img class="footer-btn" src="/media/buttons/footer/history.png">
+                    </a>
+			        <a href="{% url 'records' login_user.id %}">
+                        <img alt="library" src="/media/buttons/footer/library.png">
+                    </a>
+				</ul>
+            </div>
+
+            <script type="text/javascript" src="/static/papers_js/script.js"></script>
+        </footer>
+    </div>
+</body>
+</html>

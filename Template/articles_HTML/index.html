@@ -1,0 +1,102 @@
+{% extends 'articles_HTML/layout.html' %}
+{% load widget_tweaks %}
+{% block title %}Index{% endblock %}
+
+{% block header-main %}
+<script>
+    function sendGroupForm(page){
+        document.group_form.action += page;
+        document.group_form.submit();
+    }
+</script>
+<div class="wrapper2 clearfix">
+    <div class="app-title"><h1>ARTICLES</h1></div>
+    <div class="search-box">
+        <form action="{% url 'articles:index' %}" method="post" name="group_form">
+            {% csrf_token %}
+            <div class="search-item">{% render_field gen_form.genre %}</div>
+            <div class="search-item" >{% render_field check_form.groups %}</div>
+            <div class="search-item"><button>update</button></div>
+        </form>
+    </div>
+    <div class="message-div">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+<br>
+<hr>
+{% endblock %}
+
+{% block content %}
+{% for item in contents %}
+<div class="newpost">
+    <div class="group-title"><span>{{item.group.title}}</span></div>
+    <div class="box">
+        <a href="{% url 'articles:chat' item.id %}">
+            <img src={{item.genre_img}} alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+        </a>
+        <div class="mask">
+            <div class="caption">{{item.title}}</div>
+            <br>
+            <div class="caption">score={{item.score}}</div>
+            <div class="caption">comment={{item.chat_count}}</div>
+        </div>
+    </div>
+    <div class="report-box">
+        <figure><a href="{% url 'records' item.owner.id %}"><img class="owner-icon" src="{{item.owner.icon_image.url}}"></a>
+        <p class="report">{{item.report|safe}}</p></figure>
+    </div>
+    <div class="date">({{item.pub_date}})</div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block page-items %}
+<ul class="pagenation">
+    {% if contents.has_previous %}
+    <li class="page-item">
+        <a href="javascript:sendGroupForm(1);">&laquo; first</a>
+    </li>
+    <li class="page-item">
+        <a href="javascript:sendGroupForm({{contents.previous_page_number}});">&laquo; prev</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+        <a>&laquo; first</a>
+    </li>
+    <li class="page-item">
+        <a>&laquo; prev</a>
+    </li>
+    {% endif %}
+    <li class="page-item">
+        <a>
+            {{contents.number}}/{{contents.paginator.num_pages}}
+        </a>
+    </li>
+    {% if contents.has_next %}
+    <li class="page-item">
+        <a href="javascript:sendGroupForm({{contents.next_page_number}};)">
+            next &raquo;
+        </a>
+    </li>
+    <li class="page-item">
+        <a href="javascript:sendGroupForm({{contents.paginator.num_pages}});">
+            last &raquo;
+        </a>
+    </li>
+    {% else %}
+    <li class="page-item">
+        <a>next &raquo;</a>
+    </li>
+    <li class="page-item">
+        <a>last &raquo;</a>
+    </li>
+    {% endif %}
+</ul>
+{% endblock %}

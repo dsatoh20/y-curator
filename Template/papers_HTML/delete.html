@@ -1,0 +1,75 @@
+{% extends 'papers_HTML/layout.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block header-main %}
+<div class="header-title"><h1>Delete</h1></div>
+<p class="caption">※以下の投稿を削除します。</p>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="wrapper2">
+    <div class="details">
+        <div>
+            <h2>『{{contents.title}}』 ({{contents.first_author}}, {{contents.pub_year}})</h2>
+            <br>
+        </div>
+        <div class="group-title"><span>{{contents.group.title}}</span></div>
+        <br>
+        <a href="{% url 'records' contents.owner.id %}">
+            <div><img src={{ contents.owner.icon_image.url }} alt="profile_picture" align="middle"></div>
+            <br>
+            <p>- Posted by {{contents.owner}}</p>
+        </a>
+        <br>
+        <p>
+            {% if contents.doi != "" %}
+            <a href="{{contents.doi}}" target="_blank" rel="noopener noreferrer"><button type="button">Access to this paper</button></a>
+            {% else %}
+            <a href="#"><button type="button">Access to this paper</button></a>
+            {% endif %}
+        </p>
+        <div>
+            <p><img src="{{contents.genre_img}}" alt="genre_img" class="frontcover"></p>
+        </div>
+        <div class="form-common">スコア {{contents.score}}/10</div>
+	<div class="form-common">≪{{contents.genre}}≫</div>
+        <div class="form-common">
+            <p>要約</p>
+            <p class="contents-wrapper">{{contents.summary|linebreaksbr}}</p>
+        </div>
+        <div class="form-common">
+            <p>感想</p>
+            <p class="contents-wrapper">{{contents.report|linebreaksbr}}</p>
+        </div>
+        <p class="">({{contents.pub_date}})</p>
+        {% if contents.edit_count == 1 %}
+        <p class="">(Edited once)</p>
+        <p class="">(Last edit: {{ contents.edit_date }})</p>
+        {% elif contents.edit_count > 1 %}
+        <p class="">(Edited {{contents.edit_count}} times)</p>
+        <p class="">(Last edit: {{ contents.edit_date }})</p>
+        {% endif %}
+        <br>
+    </div>
+</div>
+
+<br>
+<form action="{% url 'papers:delete' id %}" method="post">
+    {% csrf_token%}
+    <tr><th></th><td>
+        <input class="main-button large" type="image" alt="delete" src="/media/buttons/main/delete.png">
+        <a href="{% url 'papers:edit' contents.id %}"><img class="main-button large" alt="cancel" src="/media/buttons/main/cancel.png"></a>
+    </td></tr>
+</form>
+<br>
+{% endblock %}

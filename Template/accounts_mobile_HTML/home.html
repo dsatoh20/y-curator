@@ -1,0 +1,287 @@
+{% load static %}
+{% load widget_tweaks %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<link rel="stylesheet" href='{% static "accounts_mobile_css/style.css" %}'/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+
+<body>
+   <div class="loader-bg">
+        <div class="loader"></div>
+    </div>
+	
+	<div class="container">
+		<header class="header">
+			<button class="header-hamburger hamburger" id="js-hamburger">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			<img class="header-logo" src="/media/homepage_pics/logo.jpg" alt="logo">
+			<a href="{% url 'profile' %}"><img class="prof-pic" src="{{login_user.icon_image.url}}"></a>
+			<nav>
+				<div class="nav" id="js-nav">
+					<br>
+					<div>
+						<form action="{% url 'home' %}" method="post" name="group_form">
+							{% csrf_token %}
+							<section>
+								<h3>Groups</h3>
+								<hr>
+								<button type="button" class="plus-btn" id="js-plus">
+									<span></span>
+									<span></span>
+								</button>
+								<script>
+									function sendGroupForm(page){
+										document.group_form.action += page;
+										document.group_form.submit();
+									}
+								</script>
+								<div class="nav-item group-list" id="js-group-list">
+									{% render_field groupform.groups id="sort-records" %}
+									<hr>
+								</div>
+							</section>
+							<br>
+							<br>
+							<section>
+								<h3>Records</h3>
+								<hr>
+								<div class="nav-item" >{% render_field appform.apps id="sort-records" %}</div>
+								<div class="nav-item"><input class="main-button" type="image" src="/media/buttons/main/filter.png"></div>
+							</section>
+						</form>
+					</div>
+					<br>
+					<hr>
+					<br>
+					<ul>
+						<li class="nav-item"><a href="{% url 'books:groups' %}"><input class="main-button" type="image" alt="add_group" src="/media/buttons/main/addgroup.png"></a></li>
+						<li class="nav-item"><a href="{% url 'books:friend' %}"><input class="main-button" type="image" alt="add_friend" src="/media/buttons/main/addfriend.png"></a></li>
+						<li class="nav-item"><a href="{% url 'profile' %}"><input class="main-button" type="image" alt="setting" src="/media/buttons/main/setting.png"></a></li>
+						<li class="nav-item"><a href="{% url 'contact' %}"><input class="main-button" type="image" alt="contact_us" src="/media/buttons/main/contact.png"></a></li>
+						<li class="nav-item"><a href="{% url 'Logout' %}"><input class="main-button" type="image" alt="logout" src="/media/buttons/main/logout.png">
+						</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<main class="main">
+			<section>
+				{% if messages %}
+				<ul class="messages">
+					{% for message in messages %}
+					<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+				<h3>New Post</h3>
+				<div class="newposts">
+					{% for item in contents %}
+						<div class="newpost">
+							<div class="group-title-box">
+								<div class="owner-icon-div"><a href="{% url 'records' item.owner.id %}"><img class="owner-icon" src="{{item.owner.icon_image.url}}"></a></div>
+								<div class="group-title"><span>{{item.group.title}}</span></div>
+							</div>
+													
+							<div class="box">
+								<div class="covers">
+									{% if item.genre in bgenre and item.isbn != "https://ndlsearch.ndl.go.jp/thumbnail/.jpg" %}
+									<a href="{% url 'books:chat' item.id %}">
+										<img src={{item.isbn}} alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in bgenre and item.isbn == "https://ndlsearch.ndl.go.jp/thumbnail/.jpg" %}
+									<a href="{% url 'books:chat' item.id %}">
+										<img src={{item.img_path}} alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in pgenre %}
+									<a href="{% url 'papers:chat' item.id%}">
+										<img src="{{item.genre_img}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in mgenre %}
+									<a href="{% url 'movies:chat' item.id %}">
+										<img src="{{item.img_path}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% elif item.genre in agenre %}
+									<a href="{% url 'articles:chat' item.id %}">
+										<img src="{{item.genre_img}}" alt="{{item.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+									</a>
+									{% endif %}
+									<div class="mask">
+										<div class="caption">{{item.title}}</div>
+										<br>
+										<div class="caption">score={{item.score}}</div>
+										<div class="caption">comment={{item.chat_count}}</div>
+									</div>
+								</div>
+								<div class="report-box">
+									<p class="report">{{item.report|safe|linebreaksbr}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="date">({{item.pub_date}})</div>
+					{% endfor %}
+				</div>
+			</section>
+			<div class="footer record-footer">
+				<div class="footer-page">
+						<ul class="page-items">
+							{% if contents.has_previous %}
+							<li class="page-item">
+								<a href="javascript:sendGroupForm(1);">&laquo;</a>
+							</li>
+							<li class="page-item">
+								<a href="javascript:sendGroupForm({{contents.previous_page_number}});">&laquo;</a>
+							</li>
+							{% else %}
+							<li class="page-item">
+								<a>&laquo;</a>
+							</li>
+							<li class="page-item">
+								<a>&laquo;</a>
+							</li>
+							{% endif %}
+							<li class="page-item">
+								<a>
+									{{contents.number}}/{{contents.paginator.num_pages}}
+								</a>
+							</li>
+							{% if contents.has_next %}
+							<li class="page-item">
+								<a href="javascript:sendGroupForm({{contents.next_page_number}});">
+									&raquo;
+								</a>
+							</li>
+							<li class="page-item">
+								<a href="javascript:sendGroupForm({{contents.paginator.num_pages}});">
+									&raquo;
+								</a>
+							</li>
+							{% else %}
+							<li class="page-item">
+								<a>&raquo;</a>
+							</li>
+							<li class="page-item">
+								<a>&raquo;</a>
+							</li>
+							{% endif %}
+						</ul>
+				</div>
+			
+			</div>
+			
+		</main>
+
+		<div class="historyposts" id="js-historyposts">
+			<div class="historypost">
+					<img class="icon" src={{record1.owner.icon_image.url}}>
+					<h4>
+						{% if record1.genre in bgenre %}
+						<a href="{% url 'books:chat' record1.id%}">{{record1.title}}</a>
+						{% elif record1.genre in pgenre %}
+						<a href="{% url 'papers:chat' record1.id %}">{{record1.title}}</a>
+						{% elif record1.genre in mgenre %}
+						<a href="{% url 'movies:chat' record1.id %}">{{record1.title}}</a>
+						{% elif record1.genre in agenre %}
+						<a href="{% url 'articles:chat' record1.id %}">{{record1.title}}</a>
+						{% endif %}
+					</h4>
+			</div>
+			<div class="historypost">
+					<img class="icon" src={{record2.owner.icon_image.url}}>
+					<h4>
+						{% if record2.genre in bgenre %}
+						<a href="{% url 'books:chat' record2.id %}">{{record2.title}}</a>
+						{% elif record2.genre in pgenre %}
+						<a href="{% url 'papers:chat' record2.id %}">{{record2.title}}</a>
+						{% elif record2.genre in mgenre %}
+						<a href="{% url 'movies:chat' record2.id %}">{{record2.title}}</a>
+						{% elif record2.genre in agenre %}
+						<a href="{% url 'articles:chat' record2.id %}">{{record2.title}}</a>
+						{% endif %}
+					</h4>
+			</div>
+			<div class="historypost">
+					<img class="icon" src={{record3.owner.icon_image.url}}>
+					<h4>
+						{% if record3.genre in bgenre %}
+						<a href="{% url 'books:chat' record3.id%}">{{record3.title}}</a>
+						{% elif record3.genre in pgenre %}
+						<a href="{% url 'papers:chat' record3.id %}">{{record3.title}}</a>
+						{% elif record3.genre in mgenre %}
+						<a href="{% url 'movies:chat' record3.id %}">{{record3.title}}</a>
+						{% elif record3.genre in agenre %}
+						<a href="{% url 'articles:chat' record3.id %}">{{record3.title}}</a>
+						{% endif %}
+					</h4>
+			</div>
+			<div class="historypost">
+					<img class="icon" src={{record4.owner.icon_image.url}}>
+					<h4>
+						{% if record4.genre in bgenre %}
+						<a href="{% url 'books:chat' record4.id%}">{{record4.title}}</a>
+						{% elif record4.genre in pgenre %}
+						<a href="{% url 'papers:chat' record4.id %}">{{record4.title}}</a>
+						{% elif record4.genre in mgenre %}
+						<a href="{% url 'movies:chat' record4.id %}">{{record4.title}}</a>
+						{% elif record4.genre in agenre %}
+						<a href="{% url 'articles:chat' record4.id %}">{{record4.title}}</a>
+						{% endif %}
+					</h4>
+			</div>
+			<div class="historypost">
+				<img class="icon" src={{record4.owner.icon_image.url}}>
+				<h4>
+					{% if record5.genre in bgenre %}
+					<a href="{% url 'books:chat' record5.id%}">{{record5.title}}</a>
+					{% elif record5.genre in pgenre %}
+					<a href="{% url 'papers:chat' record5.id %}">{{record5.title}}</a>
+					{% elif record5.genre in mgenre %}
+					<a href="{% url 'movies:chat' record5.id %}">{{record5.title}}</a>
+					{% elif record5.genre in agenre %}
+					<a href="{% url 'articles:chat' record5.id %}">{{record5.title}}</a>
+					{% endif %}
+				</h4>
+			</div>
+			<div class="historypost">
+				<img class="icon" src={{record4.owner.icon_image.url}}>
+				<h4>
+					{% if record6.genre in bgenre %}
+					<a href="{% url 'books:chat' record6.id%}">{{record6.title}}</a>
+					{% elif record6.genre in pgenre %}
+					<a href="{% url 'papers:chat' record6.id %}">{{record6.title}}</a>
+					{% elif record6.genre in mgenre %}
+					<a href="{% url 'movies:chat' record6.id %}">{{record6.title}}</a>
+					{% elif record6.genre in agenre %}
+					<a href="{% url 'articles:chat' record6.id %}">{{record6.title}}</a>
+					{% endif %}
+				</h4>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="footer-nav">
+				<ul>
+					<a href="{% url 'home' %}"><img alt="home" src="/media/buttons/footer/home.png"></a>
+					<a href="{% url 'books:post' %}"><img alt="post" src="/media/buttons/footer/post.png"></a>
+					<a class="history" id="js-history"><img alt="history" src="/media/buttons/footer/history.png"></a>
+					<a href="{% url 'records' login_user.id %}"><img alt="library" src="/media/buttons/footer/library.png"></a>					
+				</ul>
+			</div>
+
+
+			<script type="text/javascript" src="/static/accounts_js/script.js"></script>
+
+		</footer>
+	</div>
+</body>
+</html>

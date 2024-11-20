@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Y</title>
+<link rel="stylesheet" href='{% static "accounts_css/style.css" %}' type="text/css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+<body>
+   <div class="wrapper">
+      <div class="container">
+         <h1><figure class="frame"><img class="logo-nav logo-login" src="/media/homepage_pics/logo.jpg"></figure></h1>
+
+         <form method="post" action="{% url 'Login' %}" class="form">
+            {% csrf_token %}
+	         <input type="hidden" name="next" value="{{ request.GET.next }}">
+            <input type="text" id=clearbutton2 placeholder="User ID" name="userid">
+            <input type="password" id=clearbutton2 placeholder="Password" name="password">
+            <input type="submit" class="button" value="Login" style="background-color: white;">
+         </form>
+         <div style="height: 10%;">
+            {% if messages %}
+            <ul class="messages" style="color:#652600 ;">
+               {% for message in messages %}
+               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+               {% endfor %}
+            </ul>
+            {% endif %}            
+         </div>
+         <p class="message">Don't have an account? 
+         <a href="{% url 'SignUp' %}"><u>Sign up for Y</u>.</a>
+         </p>
+      </div>
+   </div>
+   <div class="footer">
+      <div class="footer-nav">
+          <ul>
+              <a href="#">about us</a>
+              <p>|</p>
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSffl6bNS5E_pVM_YToC1gJQkFDNA_494JuR3JOmLG87FI1axQ/viewform?embedded=true" target="_blank" rel="noopener noreferrer">contact us</a>
+          </ul>
+      </div>
+      <div class="copyright-info">
+          <p>© 2024 Y | All Rights Reserved</p>
+      </div>
+   </div>
+</body>
+</html>

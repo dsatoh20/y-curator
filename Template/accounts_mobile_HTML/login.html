@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Y</title>
+<link rel="stylesheet" href='{% static "accounts_mobile_css/style.css" %}' type="text/css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+<body>
+   <div class="wrapper">
+      <div class="container">
+         <h1><figure class="frame"><img class="logo-nav logo-login" src="/media/homepage_pics/logo.jpg"></figure></h1>
+         <form method="post" action="{% url 'Login' %}" class="login-form">
+            {% csrf_token %}
+	         <input type="hidden" name="next" value="{{ request.GET.next }}">
+            <input type="text" class="input-login" id=clearbutton2 placeholder="User ID" name="userid">
+            <input type="password" class="input-login" id=clearbutton2 placeholder="Password" name="password">
+            <input type="submit" class="button" value="Login">
+            <div class="error">
+               {% if messages %}
+               <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+                  {% endfor %}
+               </ul>
+               {% endif %}               
+            </div>
+            <p>Don't have an account?<a href="{% url 'SignUp' %}"> <u>Sign up</u>.</a></p>
+         </form>
+         <div class="copyright-info login-copyright">
+            <p>© 2024 Y | All Rights Reserved</p>
+         </div>
+      </div>
+      
+   </div>
+</body>
+</html>

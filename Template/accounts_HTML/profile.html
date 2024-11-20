@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<link rel="stylesheet" href='{% static "accounts_css/style.css" %}'/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="././static/accounts_js/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+<body>
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="flex">
+                <div class="logo"><img alt="logo" src="/media/homepage_pics/logo_zako.png"></div>
+                    <div class="header-nav-item"><a href="{% url 'home' %}"><img alt="home" src="/media/buttons/header/home.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'books:post' %}"><img alt="post" src="/media/buttons/header/post.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'forum' %}"><img alt="forum" src="/media/buttons/header/forum.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'books:groups' %}"><img alt="group" src="/media/buttons/header/group.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'records' login_user.id %}"><img alt="portfolio" src="/media/buttons/header/portfolio.png"></a></div>
+                <div class="header-nav-prof">
+                    <a href="{% url 'profile' %}" class="prof-item"><img class="prof-pic" src="{{login_user.icon_image.url}}"></a>
+                </div>
+            </ul>
+        </nav>
+    </header>
+   <div class="wrapper2 clearfix">
+      
+      <main class="main">
+         <header class="header-main">
+            <h2>Settings</h2>
+         </header>
+         {% if messages %}
+         <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+            {% endfor %}
+         </ul>
+         {% endif %}
+         <div class="container">
+            <h2>-Notifications-</h2>
+            <div class="container1-home">
+               <h3>LINE</h3>
+               <p>フレンドの新規投稿・コメントをLINEでお知らせします。</p>
+               <br>
+               <img src="https://qr-official.line.me/gs/M_681uwhbu_GW.png?oat_content=qr" height="200px" width="auto">
+               <br>
+               <br>
+               <div><input type="image" class="unveil-button" alt="secret key" src="/media/buttons/main/secretkey.png"></div>
+               <div class="hidden-value">{{login_user.secret_key}}</div>
+            </div>
+            <br>
+            <h2>-Account-</h2>
+            <p><img src={{ img_path }} alt="profile_picture" align="middle"></p>
+            <h3>{{login_user}}</h3>
+            <form enctype="multipart/form-data" method="post" class="form">
+               {% csrf_token %}
+               {% render_field form.email placeholder="Email" %}
+               {{ form.email.errors }}
+               {% render_field form.first_name placeholder="First Name" %}
+               {{ form.first_name.errors }}
+               {% render_field form.last_name placeholder="Last Name" %}
+               {{ form.last_name.errors }}
+               {% render_field form.account_image placeholder="Profile Picture" class="dropzone" %}
+	            <span><h3 class="textForDropzone">Drop Image here or Click</h3></span>
+               {{ form.account_image.errors }}
+               <tr><td></td><tr>
+               <div><input class="button" type="submit" value="Register"></div>
+            </form>
+	    <br>
+         </div>
+      </main>
+   </div>
+   <div class="footer">
+      <div class="footer-nav">
+          <ul>
+              <a href="{% url 'Logout' %}">logout</a>
+              <p>|</p>
+              <a href="{% url 'contact' %}">contact us</a>
+          </ul>
+      </div>
+      <div class="copyright-info">
+          <p>© 2024 Y | All Rights Reserved</p>
+      </div>
+  </div>
+</body>
+</html>

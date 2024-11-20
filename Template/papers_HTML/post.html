@@ -1,0 +1,85 @@
+{% extends 'papers_HTML/layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Post Papers{% endblock %}
+
+{% block header-main %}
+<div class="header-title"><h1>Post</h1></div>
+<section>
+    <form id="form">
+        <select name="select">
+            <option value="{% url 'books:post' %}">Books</option>
+            <option value="{% url 'movies:post' %}">Movies</option>
+            <option value="{% url 'papers:post' %}">Papers</option>
+            <option value="{% url 'articles:post' %}">Articles</option>
+        </select>
+    </form>
+</section>
+<p class="caption"></p>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'papers:post' %}" method="post">
+{% csrf_token%}
+
+<div class="post-content-size">
+    <div class="form-common">タイトル {% render_field form.title %}
+        {{ form.title.errors }}
+    </div>
+    <br>
+    <div class="clearfix">
+        <div class="form-common float-right">著者 {% render_field form.first_author %}
+        {{ form.first_author.errors }}
+        </div>
+        <div class="form-common float-right">公開年 {% render_field form.pub_year %}
+        {{ form.pub_year.errors }}
+        </div>
+    </div>
+    <br>
+    <div class="form-common">DOI {% render_field form.doi%}
+        {{ form.doi.errors }}
+    </div>
+    <br>
+    <div class="form-common">
+        スコア {% render_field form.score type="range" min="1" max="10" step="1" %} <span id="current-value"></span>
+        {{ form.score.errors }}
+    </div>
+    <br>
+    <div class="form-common">
+        要約 {% render_field form.summary %}
+        {{ form.summary.errors }}
+    </div>
+    <br>
+    <div class="form-common">
+        感想 {% render_field form.report %}
+        {{ form.report.errors }}
+    </div>
+    <br>
+    <div class="clearfix">
+        <div class="form-common float-left">
+            ジャンル {% render_field form.genre %}
+            {{ form.genre.errors }}
+        </div>
+        <div class="form-common float-right">
+            Group {% render_field form.group %}
+            {{ form.group.errors }}    
+        </div>
+    </div>
+</div>
+<input class="main-button large" type="image" alt="post" src="/media/buttons/main/post.png">
+</form>
+<br>
+<div id="js-summary" class="hidden"></div>
+<div id="js-thoughts" class="hidden"></div>
+<div id="js-hamburger" class="hidden"></div>
+<div id="js-history" class="hidden"></div>
+{% endblock %}

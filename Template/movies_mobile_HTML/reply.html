@@ -1,0 +1,82 @@
+{% extends 'movies_mobile_HTML/layout.html' %}
+
+{% block title %}TalkRoom{% endblock %}
+
+{% block header-main %}
+<h3 class="header-title">TalkRoom</h3>
+<br>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="wrapper2 main clearfix scroll-bar font-size-22px">
+    <div class="comment-area scroll-bar">
+        <br>
+        <br>
+        <a href="{% url 'movies:chat' chat_id %}" ><input class="main-button" type="image" alt="other topics" src="/media/buttons/main/othertopics.png"></a>
+        <br>
+        <div class="post-it-wrapper reply">
+            <div class="post-it">
+                <div class="post-it-owner">
+                    <img src={{ chat_contents.owner.icon_image.url }} alt="profile_picture">
+                    <div class="owner-date">
+                        <div class="owner">{{chat_contents.owner}}</div>        
+                        <div class="date">{{chat_contents.pub_date}}</div>                 
+                    </div>
+                </div>
+                <div class="post-it-main"><a href="#">{{chat_contents.comment}}</a></div>
+                <br>
+            </div>
+        </div>
+        <br>
+        <br>
+    {% for reply_item in reply_contents %}
+        
+        {% if reply_item.owner == login_user %}
+        <div class="reply-wrapper right">
+            <div class="popover">
+                <div class="icon right" style="background-image :url({{reply_item.owner.icon_image.url}});">
+                    <div class="popover-container right">
+                        <p class="popover-title">{{reply_item.owner}}</p>
+                        <p class="popover-content">{{reply_item.comment}}</p>
+                        <p class="popover-time">({{reply_item.pub_date}})</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif reply_item.owner != login_user %}
+        <div class="reply-wrapper left">
+            <div class="popover">
+                <div class="icon left" style="background-image :url({{reply_item.owner.icon_image.url}});">
+                    <div class="popover-container left">
+                        <p class="popover-title">{{reply_item.owner}}</p>
+                        <p class="popover-content">{{reply_item.comment}}</p>
+                        <p class="popover-time">({{reply_item.pub_date}})</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+        <div>
+            <form action="{% url 'movies:reply' chat_id=chat_id reply_id=reply_id %}" method="post" class="rep-form">
+                {% csrf_token%}
+                {{form.comment}}
+                <input class="main-button" type="image" alt="reply" src="/media/buttons/main/reply.png">
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+
+<div id="js-summary" class="hidden"></div>
+<div id="js-thoughts" class="hidden"></div>
+{% endblock %}

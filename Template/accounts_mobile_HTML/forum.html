@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<link rel="stylesheet" href='{% static "accounts_css/style.css" %}'/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="././static/accounts_js/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+<body>
+   <header class="header">
+      <nav class="header-nav">
+         <ul class="flex">
+            <div class="header-nav-item home"><a href="{% url 'home' %}">home</a></div>
+            <div class="header-nav-item post"><a href="{% url 'books:post' %}">post</a></div>
+            <div class="header-nav-item forum"><a href="{% url 'forum' %}">forum</a></div>
+            <div class="header-nav-item group"><a href="{% url 'books:groups' %}">group</a></div>
+            <div class="header-nav-item friend"><a href="{% url 'books:friend' %}">friend</a></div>
+            <div class="prof clearfix">
+                <a href="{% url 'records' login_user.id %}" class="prof-item"><img class="prof-pic" src="{{login_user.icon_image.url}}" style="object-fit: contain; width: 40px; height: 40px;"></a>
+                <a href="{% url 'records' login_user.id %}" class="login-user prof-item">{{request.user}}</a>
+            </div>
+          </ul>
+      </nav>
+  </header>
+  <div class="wrapper2 clearfix">
+    <div class="nav">
+        <div>
+            <form action="{% url 'forum' %}" method="post" name="group_form">
+                {% csrf_token %}
+                <h3>Groups</h3>
+                <div class="search-item">{% render_field groupform.groups id="sort-records" %}</div>
+                <div class="search-item"><button>update</button></div>
+            </form>
+        </div>
+    </div>
+    <div class="post-it-wrapper">
+        {% for item in contents %}
+        <div class="post-it">
+            <div class="post-it-owner">
+                <img src={{ item.owner.icon_image.url }} alt="profile_picture">
+                <div class="owner-date">
+                    <div class="owner">{{item.owner}}</div>        
+                    <div class="date">{{item.pub_date}}</div>                 
+                </div>
+            </div>
+            {% if item.app == "books" %}
+            <div class="post-it-main"><a href="{% url 'books:reply' chat_id=item.record.id reply_id=item.id %}">{{item.comment|safe|linebreaksbr}}</a></div>
+            {% elif item.app == "articles" %}
+            <div class="post-it-main"><a href="{% url 'articles:reply' chat_id=item.record.id reply_id=item.id %}">{{item.comment|safe|linebreaksbr}}</a></div>
+            {% elif item.app == "movies" %}
+            <div class="post-it-main"><a href="{% url 'movies:reply' chat_id=item.record.id reply_id=item.id %}">{{item.comment|safe|linebreaksbr}}</a></div>
+            {% elif item.app == "papers" %}
+            <div class="post-it-main"><a href="{% url 'papers:reply' chat_id=item.record.id reply_id=item.id %}">{{item.comment|safe|linebreaksbr}}</a></div>
+            {% endif %}
+            <div class="post-it-sub">
+                <div>↩ {{item.reply_count}}</div>
+            </div>
+        </div>
+        
+        {% endfor %}
+    </div>
+  </div>
+
+   <div class="footer">
+      <div class="footer-nav">
+          <ul>
+              <a href="{% url 'home' %}">home</a>
+              <p>|</p>
+              <a href="{% url 'Logout' %}">logout</a>
+              <p>|</p>
+              <a href="{% url 'profile' %}">settings</a>
+              <p>|</p>
+              <a href="{% url 'contact' %}">contact us</a>
+          </ul>
+      </div>
+      <div class="copyright-info">
+          <p>© 2024 Y | All Rights Reserved</p>
+      </div>
+  </div>
+</body>
+</html>

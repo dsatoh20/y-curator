@@ -1,0 +1,120 @@
+{% extends 'books_mobile_HTML/layout.html' %}
+
+{% block title %}Comment{% endblock %}
+
+{% block header-main %}
+<h3 class="header-title">BookRecord</h3>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="wrapper2 main clearfix scroll-bar font-size-22px">
+    <section class="details">
+        <br>
+            <div class="group-title"><span>{{brcd_contents.group.title}}</span></div>
+            <div class="card scroll-bar">
+                <div>
+                    {% if brcd_contents.isbn != "https://ndlsearch.ndl.go.jp/thumbnail/.jpg" %}
+                    <img src={{img_path}} onerror={{onerror}} alt="frontcover" class="frontcover">
+                    {% else %}
+                    <img src={{brcd_contents.img_path}} alt="frontcover" class="frontcover">
+                    {% endif %}
+                </div>
+                <div class="card_text">
+                    <p>『{{brcd_contents.title}}』</p>
+                    <p>({{brcd_contents.first_author}}, {{brcd_contents.pub_year}})</p>
+                    <p class="caption">≪{{brcd_contents.genre}}≫</p>
+                    <p class="caption"><img class="info" src="/media/homepage_pics/info=score.png" alt="score:"><a>{{brcd_contents.score}}</a></p>
+                    <p class="caption"><img class="info" src="/media/homepage_pics/info=comment.png" alt="comment:"><a>{{brcd_contents.chat_count}}</a></p>	
+                    <p class="">({{brcd_contents.pub_date}})</p>
+                    {% if brcd_contents.edit_count == 1 %}
+                    <p class="">(Edited once)</p>
+                    <p class="">(Last edit: {{ brcd_contents.edit_date }})</p>
+                    {% elif brcd_contents.edit_count > 1 %}
+                    <p class="">(Edited {{brcd_contents.edit_count}} times)</p>
+                    <p class="">(Last edit: {{ brcd_contents.edit_date }})</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="report-box">
+                <div class="forowner">
+                    <a href="{% url 'records' brcd_contents.owner.id %}"><img class="owner-icon" src="{{brcd_contents.owner.icon_image.url}}"></a>
+                    <p>{{brcd_contents.owner}}</p>
+                    <br>
+                    {% if brcd_contents.owner == login_user %}
+                    <a href="{% url 'books:edit' brcd_contents.id %}"><input class="main-button" type="image" alt="edit" src="/media/buttons/main/edit.png"></a>
+                    <a href="{% url 'books:repost' brcd_contents.id %}"><input class="main-button" type="image" alt="repost" src="/media/buttons/main/repost.png"></a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <section class="summary">
+            <input id="js-summary" class="summary-btn main-button" type="image" alt="overview" src="/media/buttons/main/overview.png">
+            <p class="contents-wrapper" id="js-summary-contents" style="margin-top: 50px;">{{brcd_contents.summary|safe|linebreaksbr}}</p>
+        </section>
+        <section class="thoughts">
+            <input id="js-thoughts" class="thoughts-btn main-button" type="image" alt="experience" src="/media/buttons/main/experience.png">
+            <p class="contents-wrapper" id="js-thoughts-contents">{{brcd_contents.report|safe|linebreaksbr}}</p>
+        </section>
+    <section class="comment-area">
+    <br>
+        <h4>Post-it</h4>
+        <form action="{% url 'books:highlight' id %}" method="post" name="highlightForm" >
+            {% csrf_token %}
+            <input type="hidden" name="highlight" id="highlight-id">
+            <input id="btn" class="main-button" type="image" alt="highlight" src="/media/buttons/main/highlight.png"> or
+        </form>         
+        <script>
+            var btn = document.getElementById('btn');
+            var hiddenField = document.getElementById('highlight-id');
+            btn.onclick = function(){
+                var selObj = window.getSelection();
+                if (selObj.toString().trim() === "") {
+                    alert("カーソルでViewing experienceの中の文字列を選択してください。");
+                } else {
+                    var selRange = selObj.getRangeAt(0);
+                    if (selObj.toString().trim() === "") {
+                        alert("カーソルでViewing experienceの中の文字列を選択してください。");
+                    } else {
+                        hiddenField.value = selRange;
+                        document.highlightForm.submit()
+                    }
+                }
+            }
+        </script>
+            
+        <p class="form-ano">Type in an empty note below</p>
+        <form action="{% url 'books:chat' id %}" method="post" class="post-it-form">
+            {% csrf_token%}
+            {{form.comment}}
+            <input class="main-button" type="image" alt="submit" src="/media/buttons/main/submit.png">
+        </form>
+        <div class="post-it-wrapper">
+            {% for item in chat_contents %}
+            <div class="post-it">
+                <div class="post-it-owner">
+                    <img src={{ item.owner.icon_image.url }} alt="profile_picture">
+                    <div class="owner-date">
+                        <div class="owner">{{item.owner}}</div>        
+                        <div class="date">{{item.pub_date}}</div>                 
+                    </div>
+                </div>
+                <div class="post-it-main"><a href="{% url 'books:reply' chat_id=id reply_id=item.id %}">{{item.comment}}</a></div>
+                <div class="post-it-sub">
+                    <div>↩ {{item.reply_count}}</div>
+                </div>
+            </div>
+            
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

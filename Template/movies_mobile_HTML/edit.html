@@ -1,0 +1,73 @@
+{% extends 'movies_mobile_HTML/layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Edit{% endblock %}
+
+{% block header-main %}
+<h3 class="header-title">Edit</h3>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<section>
+    <h4 class="font-size-22px">※以下の投稿を編集できます。</h4>
+    <h3>{{prcd.title}}</h3>
+    <br>
+    <form action="{% url 'movies:edit' id %}" method="post">
+        {% csrf_token%}
+
+        <div class="post-content-size">
+            <div class="flex clearfix">
+                <div class="form-common">監督
+                    {{ form.director }}
+                    {{form.director.errors}}
+                </div>
+                <div class="form-common">公開年
+                    {{ form.pub_year }}
+                    {{form.pub_year.errors}}
+                </div>
+            </div>
+            <br>
+            <div class="form-common">スコア
+            {% render_field form.score placeholder="Score" type="range" min="1" max="10" step="1" %} <span id="current-value"></span>
+            {{form.score.errors}}
+            </div>
+            <br>
+            <div class="form-common">要約
+            {% render_field form.summary placeholder="Summary" %}
+            {{form.summary.errors}}
+            </div>
+            <br>
+            <div class="form-common">感想
+            {% render_field form.report placeholder="Report" %}
+            {{form.report.errors}}
+            </div>
+            <br>
+            <div class="flex clearfix">
+                <div class="form-common">ジャンル
+                    {{ genre_form.genre }}
+                    {{genre_form.genre.errors}}
+                </div>
+                <div class="form-common">Group
+                    {% render_field group_form.groups placeholder="Group" %}
+                    {{group_form.groups.errors}}
+                </div>
+            </div>
+            <br>
+            <div class="flex">
+                <input class="btn-medium" type="submit" value="Post">
+                <a href="{% url 'movies:delete' id %}" class="btn-delete"><button class="btn-medium" type="button">Delete</button></a>
+            </div>
+        </div>
+        <br>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'books_HTML/layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Friend{% endblock %}
+
+{% block header-main %}
+<div class="header-title"><h1>Friend</h1></div>
+<p class="caption">※メールアドレスでユーザーを検索してフレンドに追加します</p>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'books:friend' %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="mode" value="__find_form__">
+Email {% render_field form.find %}
+<tr><th></th><td>
+    <input class="main-button" type="image" alt="search" src="/media/buttons/friend/search.png"></td></tr>
+</form>
+<form action="{% url 'books:friend' %}" method="post">
+{% csrf_token %}
+<br>
+Group <input type="hidden" name="mode" value="__group_form__">
+{% render_field gform.groups %}
+<tr><th></th><td>
+    <input class="main-button" type="image" alt="search" src="/media/buttons/friend/search.png"></td></tr>
+</form>
+<br>
+<hr>
+<div class="wrapper2">
+    <table class="table" width="80%">
+        <tr>
+            <th class="icon" width="35%">Username</th>
+            <th width="25%">Name</th>
+            <th width="35%">Email</th>
+            <th width="5%">Add</th>
+        </tr>
+    {% for item in data %}
+        <tr>
+            <td class="icon" style="background-image :url({{item.icon_image.url}});">
+                <a href="{% url 'records' item.id %}">{{item.user}}</a>
+            </td>
+            <td>{{item.first_name}} {{item.last_name}}</td>
+            <td>{{item.email}}</td>
+            <td>
+                <span class="float-right">
+                    <a href="{% url 'books:add' %}?name={{item.user}}"><input class="main-button" type="image" alt="add" src="/media/buttons/friend/add.png"></a>
+                </span>
+            </td>
+            
+        </tr>
+    {% endfor %}
+    </table>
+    <br>
+    <br>
+</div>
+
+
+{% endblock %}

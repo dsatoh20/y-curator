@@ -1,0 +1,83 @@
+{% extends 'articles_mobile_HTML/layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Post Articles{% endblock %}
+
+{% block header-main %}
+<h3 class="header-title">Post</h3>
+
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<section>
+    <form id="form">
+        <select name="select">
+            <option value="{% url 'books:post' %}">Books</option>
+            <option value="{% url 'movies:post' %}">Movies</option>
+            <option value="{% url 'papers:post' %}">Papers</option>
+            <option value="{% url 'articles:post' %}">Articles</option>
+        </select>
+    </form>
+</section>
+
+<form action="{% url 'articles:post' %}" method="post">
+{% csrf_token%}
+
+<div class="post-page">
+    <h4 class="font-size-22px">※適切なタイトル・著者名を入力すると、出版年・要約(あらすじ)は自動で補完されます。</h4>
+    <br>    
+    <div class="form-common">タイトル {% render_field form.title %}
+    {{ form.title.errors }}
+    </div>
+    <div class="form-common">投稿者 {% render_field form.first_author %}
+    {{ form.first_author.errors }}
+    </div>
+    <div class="form-common">投稿日 {% render_field form.pub_year %}
+    {{ form.pub_year.errors }}
+    </div>
+    <br>
+    <div class="form-common">URL {% render_field form.link%}
+        {{ form.link.errors }}
+    </div>
+    <br>
+    <div class="form-common">
+        スコア {% render_field form.score type="range" min="1" max="10" step="1" %} <span id="current-value"></span>
+        {{ form.score.errors }}
+    </div>
+    <br>
+    <div class="form-common">
+    要約 {% render_field form.summary %}
+    {{ form.summary.errors }}
+    </div>
+    <br>
+    <div class="form-common">
+    感想 {% render_field form.report %}
+    {{ form.report.errors }}
+    </div>
+    <br>
+    <div class="flex clearfix">
+        <div class="form-common">
+        ジャンル {% render_field form.genre %}
+        {{ form.genre.errors }}
+        </div>
+        <div class="form-common">
+        Group {% render_field form.group %}
+        {{ form.group.errors }}
+        </div>
+    </div>
+    <input class="main-button large" type="image" alt="post" src="/media/buttons/main/post.png">
+    <div id="js-summary" class="hidden"></div>
+    <div id="js-thoughts" class="hidden"></div>
+</div>
+</form>
+
+{% endblock %}

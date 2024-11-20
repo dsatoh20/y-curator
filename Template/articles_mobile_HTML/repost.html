@@ -1,0 +1,69 @@
+{% extends 'articles_mobile_HTML/layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}RePost{% endblock %}
+
+{% block header-main %}
+<h3 class="header-title">RePost</h3>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h4 class="font-size-22px">※以下のレコードを別のグループに再投稿できます。</h4>
+<h3>{{brcd.title}}</h3>
+<br>
+<form action="{% url 'articles:repost' id %}" method="post">
+    {% csrf_token%}
+
+    <div class="post-content-size">
+        <div class="flex clearfix">
+            <div class="form-common">著者
+                {{ form.first_author }}
+                {{form.first_author.errors}}
+            </div>
+            <div class="form-common">投稿日
+                {{ form.pub_year }}
+                {{form.pub_year.errors}}
+            </div>
+        </div>
+        <br>
+        <div class="form-common">スコア
+        {% render_field form.score placeholder="Score" type="range" min="1" max="10" step="1" %} <span id="current-value"></span>
+        {{form.score.errors}}
+        </div>
+        <br>
+        <div class="form-common">要約
+        {% render_field form.summary placeholder="Summary" %}
+        {{form.summary.errors}}
+        </div>
+        <br>
+        <div class="form-common">感想
+        {% render_field form.report placeholder="Report" %}
+        {{form.report.errors}}
+        </div>
+        <br>
+        <div class="flex clearfix">
+            <div class="form-common">ジャンル
+                {{ genre_form.genre loat-left}}
+                {{genre_form.genre.errors}}
+            </div>
+            <div class="form-common">Group
+                {% render_field group_form.groups placeholder="Group" %}
+                {{group_form.groups.errors}}
+            </div>
+        </div>
+        <br>
+        <input class="btn-medium" type="submit" value="Post">
+    </div>
+    <br>
+    
+</form>
+{% endblock %}

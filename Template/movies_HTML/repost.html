@@ -1,0 +1,69 @@
+{% extends 'movies_HTML/layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}RePost{% endblock %}
+
+{% block header-main %}
+<div class="header-title"><h1>RePost</h1></div>
+<p class="caption">※以下のレコードを別のグループに再投稿できます。</p>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h2>{{brcd.title}}</h2>
+<br>
+<form action="{% url 'movies:repost' id %}" method="post">
+    {% csrf_token%}
+
+    <div class="post-content-size">
+        <div class="clearfix">
+            <div class="form-common float-right">監督
+                {{ form.director }}
+                {{form.director.errors}}
+            </div>
+            <div class="form-common float-right">出版年
+                {{ form.pub_year }}
+                {{form.pub_year.errors}}
+            </div>
+        </div>
+        <br>
+        <div class="form-common">スコア
+        {% render_field form.score placeholder="Score" type="range" min="1" max="10" step="1" %} <span id="current-value"></span>
+        {{form.score.errors}}
+        </div>
+        <br>
+        <div class="form-common">要約
+        {% render_field form.summary placeholder="Summary" %}
+        {{form.summary.errors}}
+        </div>
+        <br>
+        <div class="form-common">感想
+        {% render_field form.report placeholder="Report" %}
+        {{form.report.errors}}
+        </div>
+        <br>
+        <div class="clearfix">
+            <div class="form-common float-left">ジャンル
+                {{ genre_form.genre }}
+                {{genre_form.genre.errors}}
+            </div>
+            <div class="form-common float-right">Group
+                {% render_field group_form.groups placeholder="Group" %}
+                {{group_form.groups.errors}}
+            </div>
+        </div>
+        <br>
+        <input class="main-button large" type="image" alt="post" src="/media/buttons/main/post.png">
+    </div>
+    <br>
+    
+</form>
+{% endblock %}

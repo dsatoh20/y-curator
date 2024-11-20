@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="ja" dir="ltr">
+
+<head>
+<meta charset="utf-8">
+<title>Sign Up</title>
+<link rel="stylesheet" href='{% static "accounts_mobile_css/style.css" %}'/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+
+<body>
+ <div class="wrapper">
+  <div class="container">
+     <h1><figure class="frame"><img class="logo-nav" src="/media/homepage_pics/logo.jpg"></figure></h1>
+     <h2>Sign up</h2>
+     
+     <form enctype="multipart/form-data" method="post" class="login-form register-form">
+        {% csrf_token %}
+        {% render_field account_form.username placeholder="User ID" class="input-login" %}        
+        {% render_field account_form.password placeholder="Password" class="input-login" %}
+        {% render_field add_account_form.email placeholder="Email" class="input-login" %}
+        {% render_field add_account_form.first_name placeholder="First name" class="input-login" %}
+        
+        {% render_field add_account_form.last_name placeholder="Last name" class="input-login" %}
+        
+        {% render_field add_account_form.account_image placeholder="Profile picture" class="dropzone" %}
+        <span><h3 class="textForDropzone">Tap here to set your profile image.</h3></span>
+	     
+        <tr><td></td><td>
+        <input class="button" type="submit" value="Register">
+        <div class="error">
+         {% if messages %}
+            <ul class="messages">
+               {{account_form.username.errors}}
+               {{account_form.password.errors}}
+               {{add_account_form.email.errors}}
+               {{add_account_form.first_name.errors}}
+               {{add_account_form.last_name.errors}}
+               {{add_account_form.account_image.errors}}
+
+               {% for message in messages %}
+               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+               {% endfor %}
+            </ul>
+         {% endif %}               
+        </div>
+        <p>Already have an account? 
+         <a href="{% url 'Login' %}"><u>Log in here</u>.</a>
+        </p>
+     </form>
+     
+   </div>
+ </div>
+
+</div>
+
+</body>
+</html>

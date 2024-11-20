@@ -1,0 +1,78 @@
+{% extends 'books_HTML/layout.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Groups{% endblock %}
+
+{% block header-main %}
+<div class="header-title"><h1>Group</h1></div>
+<p class="caption">※グループを選択してselect groupすると、そのグループに登録されている利用者がONになります。</p>
+<p class="caption">※利用者のチェックをONにしてset memberすると、ONにしてある利用者がグループに追加されます。</p>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<br>
+<form action="{% url 'books:groups' %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="mode" value="__groups_form__">
+Group : 
+{% render_field groups_form.groups %}
+<input class="main-button" type="image" alt="select group" src="/media/buttons/group/selectgroup.png">
+</form>
+<br>
+<hr>
+<br>
+<form action="{% url 'books:groups' %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="mode" value="__friends_form__">
+<input type="hidden" name="group" value="{{group}}">
+Friends : 
+{% render_field friends_form.friends %}
+<input class="main-button" type="image" alt="set members" src="/media/buttons/group/setmembers.png">
+</form>
+<br>
+Invite link for new users:
+<div>
+    
+</div>
+<!-- コピー対象要素とコピーボタン -->
+<input id="copyTarget" type="text" value="{{login_user}} invited you to the group, {{group_obj.title}}. https://ycurator.net/register/?inviter={{login_user}}&code={{group_obj.invitation_code}}" readonly>
+<input class="main-button" type="image" alt="copy" src="/media/buttons/group/copy.png" onclick="copyToClipboard()">
+<!-- bodyタグ内の下部に以下を入力する -->
+<script>
+    function copyToClipboard() {
+        // コピー対象をJavaScript上で変数として定義する
+        var copyTarget = document.getElementById("copyTarget");
+
+        // コピー対象のテキストを選択する
+        copyTarget.select();
+
+        // 選択しているテキストをクリップボードにコピーする
+        document.execCommand("Copy");
+
+        // コピーをお知らせする
+        alert("Successfully copied to your clipboard: \n" + copyTarget.value);
+    }
+</script>
+<br>
+<br>
+<hr>
+<br>
+<p>※新しいGroupの登録</p>
+<form action="{% url 'books:creategroup' %}" method="post">
+{% csrf_token %}
+Group Name : 
+{% render_field create_form.group_name %}
+<input class="main-button" type="image" alt="create new group" src="/media/buttons/group/createnewgroup.png">
+</form>
+<br>
+<br>
+{% endblock %}

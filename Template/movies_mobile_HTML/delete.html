@@ -1,0 +1,71 @@
+{% extends 'movies_mobile_HTML/layout.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block header-main %}
+<h3 class="header-title">Delete</h3>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="wrapper2 font-size-22px">
+    <h4 class="font-size-22px">※以下の投稿を削除します。</h4>
+    <div class="details">
+        <div>
+            <h3>『{{contents.title}}』 ({{contents.director}}, {{contents.pub_year}})</h3>
+            <br>
+        </div>
+        <div class="group-title"><span>{{contents.group.title}}</span></div>
+	<br>
+        <a href="{% url 'records' contents.owner.id %}">
+            <div><img src={{ contents.owner.icon_image.url }} alt="profile_picture" align="middle"></div>
+            <br>
+            <p>- Posted by {{contents.owner}}
+                {% if contents.owner == login_user %}
+                <a href="{% url 'movies:edit' contents.id %}"><button class="" type="button">Edit</button></a>
+                <a href="{% url 'movies:repost' contents.id %}"><button class="" type="button">RePost</button></a>
+		{% endif %}
+            </p>
+        </a>
+        <div>
+            <img src={{contents.img_path}} alt="poster" class="frontcover">
+        </div>
+        <div class="form-common">スコア {{contents.score}}/10</div>
+        <div class="form-common">≪{{contents.genre}}≫</div>
+        <div class="form-common">
+            <p>要約</p>
+            <p class="contents-wrapper">{{contents.summary|linebreaksbr}}</p>
+        </div>
+        <div class="form-common">
+            <p>感想</p>
+            <p class="contents-wrapper">{{contents.report|linebreaksbr}}</p>
+        </div>
+        <p class="">({{contents.pub_date}})</p>
+        {% if contents.edit_count == 1 %}
+        <p class="">(Edited once)</p>
+        <p class="">(Last edit: {{ contents.edit_date }})</p>
+        {% elif contents.edit_count > 1 %}
+        <p class="">(Edited {{contents.edit_count}} times)</p>
+        <p class="">(Last edit: {{ contents.edit_date }})</p>
+        {% endif %}
+        <br>
+    </div>
+
+    <form action="{% url 'movies:delete' id %}" method="post">
+    {% csrf_token%}
+    <tr><th></th><td>
+        <input type="submit" value="delete" class="btn-medium">
+    </td></tr>
+    </form>
+    <br>
+    <br>
+</div>
+{% endblock %}

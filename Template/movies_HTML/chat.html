@@ -1,0 +1,114 @@
+{% extends 'movies_HTML/layout.html' %}
+
+{% block title %}Comment{% endblock %}
+
+{% block header-main %}
+<div class="header-title"><h1>MovieRecord</h1></div>
+<p class="caption"></p>
+{% if messages %}
+<div class="message-div">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="chat-main" >
+    <div class="details clearfix scroll-bar">
+        <div class="selectedpost">
+            <div class="group-title"><span>{{prcd_contents.group.title}}</span></div>
+            <div class="box">
+                <img src={{prcd_contents.img_path}} alt="{{prcd_contents.title}}" class="frontcover" onerror="this.src='/media/homepage_pics/logo.jpg'">
+                <div class="mask">
+                    <div class="caption">≪{{prcd_contents.genre}}≫</div>
+                    <div class="caption"><img class="info" src="/media/homepage_pics/info=score.png" alt="score:"><div>{{prcd_contents.score}}</div></div>
+					<div class="caption"><img class="info" src="/media/homepage_pics/info=comment.png" alt="comment:"><div>{{prcd_contents.chat_count}}</div></div>	
+                </div>
+                <div class="summary-box">
+                    <h3>『{{prcd_contents.title}}』 ({{prcd_contents.director}}, {{prcd_contents.pub_year}})</h3>
+                    {{prcd_contents.summary|linebreaksbr}}
+                </div>
+            </div>
+            <div class="report-box">
+                <div class="forowner">
+                    <a href="{% url 'records' prcd_contents.owner.id %}"><img class="owner-icon" src="{{prcd_contents.owner.icon_image.url}}"></a>
+                    <p>{{prcd_contents.owner}}</p>
+                    <br>
+                    {% if prcd_contents.owner == login_user %}
+                    <a href="{% url 'movies:edit' prcd_contents.id %}"><input class="main-button" type="image" alt="edit" src="/media/buttons/main/edit.png"></a>
+                    <a href="{% url 'movies:repost' prcd_contents.id %}"><input class="main-button" type="image" alt="repost" src="/media/buttons/main/repost.png"></a>
+                    {% endif %}
+                </div>
+                
+                <p class="report">{{prcd_contents.report|safe|linebreaksbr}}</p>
+            </div>
+        </div>
+        <div class="date">({{prcd_contents.pub_date}})
+            {% if prcd_contents.edit_count == 1 %}
+            <div class="date">(Edited once)</div>
+            <div class="date">(Last edit: {{ prcd_contents.edit_date }})</div>
+            {% elif prcd_contents.edit_count > 1 %}
+            <div class="date">(Edited {{prcd_contents.edit_count}} times)</div>
+            <div class="date">(Last edit: {{ prcd_contents.edit_date }})</div>
+            {% endif %}
+        </div>
+    </div>    
+    <div class="comment-area scroll-bar">
+        <h4>Post-it</h4>
+        <form action="{% url 'movies:highlight' id %}" method="post" name="highlightForm" >
+            {% csrf_token %}
+            <input type="hidden" name="highlight" id="highlight-id">
+            <input id="btn" class="main-button" type="image" alt="highlight" src="/media/buttons/main/highlight.png"> or
+        </form>            
+        <script>
+            var btn = document.getElementById('btn');
+            var hiddenField = document.getElementById('highlight-id');
+            btn.onclick = function(){
+                var selObj = window.getSelection();
+                if (selObj.toString().trim() === "") {
+                    alert("カーソルで感想の中の文字列を選択してください。");
+                } else {
+                    var selRange = selObj.getRangeAt(0);
+                    if (selObj.toString().trim() === "") {
+                        alert("カーソルで感想の中の文字列を選択してください。");
+                    } else {
+                        hiddenField.value = selRange;
+                        document.highlightForm.submit()
+                    }
+                }
+            }
+        </script>
+            
+        <p class="form-ano">Type in an empty note below</p>
+        <form action="{% url 'movies:chat' id %}" method="post" class="post-it-form">
+            {% csrf_token%}
+            {{form.comment}}
+            <input class="main-button" type="image" alt="submit" src="/media/buttons/main/submit.png">
+        </form>
+        <div class="post-it-wrapper">
+            {% for item in chat_contents %}
+            <div class="post-it">
+                <div class="post-it-owner">
+                    <img src={{ item.owner.icon_image.url }} alt="profile_picture">
+                    <div class="owner-date">
+                        <div class="owner">{{item.owner}}</div>        
+                        <div class="date">{{item.pub_date}}</div>                 
+                    </div>
+                </div>
+                <div class="post-it-main"><a href="{% url 'movies:reply' chat_id=id reply_id=item.id %}">{{item.comment|safe|linebreaksbr}}</a></div>
+                <div class="post-it-sub">
+                    <div>↩ {{item.reply_count}}</div>
+                </div>
+            </div>
+            
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,903 @@
+html{
+    background-color: rgb(2, 68, 101);
+  }
+*{
+    margin: 0;
+}
+
+body{
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 40px;
+  overflow: hidden;
+}
+
+.main-button{
+    width: auto;
+    height: 70px;
+}
+
+.nav-item .main-button{
+    width: 250px;
+    height: auto;
+}
+
+.main-button:hover{
+    opacity: 0.6;
+}
+.main-button:active{
+    opacity: 0.1;
+    transition-duration: 250ms;
+    box-shadow: 0 0px 0px rgba(0,0,0,0.3);
+}
+.report-box .main-button{
+    margin-left: -5px;
+}
+
+.btn-medium{
+    width: 12vw;
+    height: 40px;
+    font-size: medium;
+}
+
+h1{
+    position: absolute;
+    left: 50%;
+}
+
+h2{
+    text-align: center;
+    line-height: 55px;
+    font-size: 80px;
+    margin-top: 50px;
+}
+
+h3{
+    text-align: center;
+    line-height: 40px;
+    font-size: 40px;
+    margin: 18px auto 0;
+}
+
+a {
+    outline: none;
+    text-decoration: none;
+    }
+    a:link { color: white; }
+    a:visited { color: white; }
+    a:active { color: white; }
+
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    height: -webkit-fill-available;
+}
+
+#firstView {
+    height: 100vh;   /* ※非対応ブラウザ対策 */
+    height: calc(var(--vh) * 100);
+}
+
+.header{
+    width: 100%;
+    color: white;
+    background-color: rgb(2, 68, 101);
+    height: 150px;
+}
+
+.header .home{
+    background: url(/media/homepage_pics/home.png) no-repeat center center / cover;
+}
+
+.header .friend{
+    background: url(/media/homepage_pics/friend.png) no-repeat center center / cover;
+}
+.header .group{
+    background: url(/media/homepage_pics/group.png) no-repeat center center / cover;
+}
+.header .post{
+    background: url(/media/homepage_pics/post.png) no-repeat center center / cover;
+}
+.header .app{
+    background: url(/media/homepage_pics/app.png) no-repeat center center / cover;
+}
+
+.header-logo{
+    display: block;
+    width: 10%;
+    height: auto;
+    margin: auto;
+    margin-top: 25px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px black;
+  }
+
+/* ハンバーガーここから */
+.header-hamburger{
+    width: 10vw;
+    height: 5vh;
+  }
+  
+  .hamburger {
+    background-color: transparent; /*buttonタグデフォルトスタイルを打ち消し*/
+    border-color: transparent; /*buttonタグデフォルトスタイルを打ち消し*/
+    position: absolute;
+    left: 2.2%;
+    top: 1.2%;
+  }
+  
+  .hamburger span{
+    width: 100%;
+    height: 4px;
+    background-color: #000;
+    position: relative;
+    transition: ease .4s;
+    display: block;
+  }
+  
+  .hamburger span:nth-child(1) {
+    top: 0;
+  }
+  
+  .hamburger span:nth-child(2) {
+    margin: 12px 0;
+  }
+  
+  .hamburger span:nth-child(3) {
+    top: 0;
+  }
+  
+  /* ハンバーガーメニュークリック後のスタイル */
+  .nav.active {
+    transform: translateX(0);
+  }
+  
+  .hamburger.active span{
+    background-color: aliceblue;
+  }
+  
+  .hamburger.active span:nth-child(1) {
+    top: 5px;
+    transform: rotate(45deg);
+  }
+  
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger.active span:nth-child(3) {
+    top: -13px;
+    transform: rotate(-45deg);
+  }
+  /* ハンバーガーここまで */
+
+.wrapper2{
+    width: 100%;
+    margin: 1px 0 1px;
+}
+  
+.clearfix::after{
+content: '';
+display: block;
+clear: both;
+}
+
+.nav{
+    transform: translateX(-100%);
+    width: 80%;
+    height: 86.2vh;
+    position: absolute;
+    top: 7.9vh;
+    left: 0;
+    right: 0;
+    text-align: center;
+    letter-spacing: 1px;
+    background-color: rgb(0, 54, 82);
+    opacity: 0.9;
+    transition: ease .4s;
+    z-index: 999;
+    font-size: 1.2rem;
+  }
+
+ul{
+list-style-type: none;
+padding: 0;
+}
+
+.logo-nav{
+    margin-top: 25px;
+    width: 70px;
+    height: 70px;
+}
+
+.nav-item{
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.sub-app{
+    opacity: 0.5;
+}
+
+.prof-pic{
+    border: 5px solid black;
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    position: absolute;
+    right: 4%;
+    top: 25px;
+  }
+
+.login-user{
+    font-size: 1rem;
+    margin-top: 1px
+}
+
+.main{
+    text-align: center;
+    background-color: rgb(0, 54, 82);
+    color: white;
+    overflow: scroll;
+    flex: 1;
+  }
+
+.header-main{
+    width: 100%;
+    background-color: rgb(0, 54, 82);
+  }
+
+.app-name{
+    width: 100%;
+    height: 100px;
+    display: inline-block;
+    padding-left: 20%;
+}
+
+.search-box{
+    display: inline-block;
+    height: 100px;
+    width: 25%;
+}
+
+
+.search-item{
+    height: 10%;
+    margin-bottom: 10%;
+}
+
+.post-page{
+    width: 70%;
+    margin: 0 auto;
+}
+
+
+section select{
+    font-size: 30px;
+    margin: 30px auto 30px;
+}
+
+
+.float-right{
+    float: right;
+}
+.float-left{
+    float: left;
+}
+
+.form-ISBN{
+    width: 20%;
+}
+
+.form-title{
+    width: 50vw;
+}
+
+.form-genre{
+    width: 18vw;
+    margin-right: 30px;
+}
+
+.form-group{
+    width: 25vw;
+    font-size: 24px;
+
+}
+
+ul#id_friends{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.post-page .form-common{
+    font-size: 30px;
+    margin-top: 20px;
+}
+
+.form-year{
+    width: 17vw;
+}
+
+.form-author{
+    width: 50vw;
+}
+
+.form-ISBN{
+    width: 50vw;
+}
+
+.form-score{
+    width: 80%;
+}
+
+.form-summary{
+    width: 95%;
+    height: 12vh;
+}
+
+.form-content{
+    width: 95%;
+    height: 18vh;
+}
+
+.form-comment{
+    width: 80%;
+    height: 8vh;
+}
+
+.form-email{
+    width: 25vw;
+    font-size: 24px;
+}
+
+.post-page .main-button{
+    margin: 35px auto 20px;
+}
+
+.newpost{
+    width: 30vw;
+    height: 23vh;
+    border-radius: 10px;
+    background-color: rgb(2, 68, 101);
+    margin: 20px 40px 30px;
+    float: left;
+    font-size: 25px;
+}
+
+
+.footer{
+    width: 100vw;
+    height: 6vh;
+    background: rgb(2, 68, 101);
+    color: white;
+  }
+  
+  .footer-nav ul {
+    display: flex;
+    unicode-bidi: isolate;
+    text-align: center;
+    justify-content: space-around;
+    height: 100%;
+  }
+  .footer-nav img{
+    height: 100%;
+    width: auto;
+    padding-bottom: 0.5vh;
+  }
+  
+  .footer-nav ul p {
+    display: inline-block;
+    margin: 0px 5%;
+    font-size: 22px;
+  }
+  
+  .footer-nav ul a{
+    display: inline-block;
+    margin: 0px 5%;
+  }
+  .footer-btn{
+    height: 6vh;
+  }
+
+.copyright-info{
+    text-align: center;
+    font-size: 1.2rem;
+    background-color: rgb(0, 54, 82);
+    margin-top: 3%;
+}
+
+.record-footer{
+    color: white;
+    background: rgb(2, 68, 101);
+}
+  
+.page-items{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+.page-item{
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 10px 25px 0;
+}
+
+.footer-page{
+    height: 50px;
+}
+
+/*.left-bottom{
+    float: left;
+}
+
+#id_groups{
+    width: 150px;
+}
+#id_group{
+    width: 150px;
+}
+#id_genre{
+    width: 150px;
+}*/
+
+.comment-area{
+    background-color: rgb(0, 54, 82);
+    overflow: scroll;
+}
+
+.form-ano{
+    font-weight: lighter    ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.comment-area .post-it-form{
+    display: block;
+    margin: 5px auto;
+}
+
+.comment-area #id_comment{
+    width: 85vw;
+    height: 30vw;
+    border: 20px solid rgb(15, 7, 85);
+    border-radius: 10px;
+    background-color: rgb(15, 7, 85);
+    color: white;
+    line-height: 1.8em;
+    font-size: 30px;
+    box-shadow: 0 0 8px black;
+    
+}
+.comment-area .rep-form{
+    display: block;
+    width: 85%;
+    height: 300px;
+    margin: 5px auto 5px;
+}
+
+
+.post-it-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+.post-it-wrapper.reply{
+    display: block;
+    text-align: center;
+}
+.post-it{
+    margin: 10px;
+    display: inline-block;
+}
+.post-it-owner{
+    display: flex;
+    width: 10vw;
+}
+.post-it-owner img{
+    display: inline-block;
+    border-radius: 10px;
+    width: 6vw;
+    height: 6vw;
+    margin-left: 24px;
+}
+.post-it-owner .owner-date{
+    display: inline-block;
+    width: 10vw;
+}
+.post-it-owner .owner{
+    margin-left: 5px;
+    display: block;
+    font-size: 1.0em;
+    text-align: left;
+}
+.post-it-owner .date{
+    display: block;
+    font-size: 0.8em;
+    width: 20vw;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.post-it .post-it-main{
+    width: 40vw;
+    height: 40vw;
+    background-color: rgb(15, 7, 85);
+    box-shadow: 0 0 8px black;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 5px;
+    margin-left: 24px;
+    line-height: 1.8em;
+    font-weight: normal;
+    text-align: left;
+    text-align: center;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+}
+.post-it-main a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+}
+.post-it-main:hover{
+    top: -3px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+}
+.post-it .post-it-sub{
+    display: block;
+}
+.post-it-sub div{
+    display: inline-block;
+}
+.post-it-sub button{
+    display: inline-block;
+}
+
+.scroll-bar::-webkit-scrollbar{
+    display: none;
+}
+
+
+.frontcover{
+    height: 250px;
+    width: 250px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  .box{
+    position: relative;
+    margin-bottom:-5px;
+  }
+  
+.newpost .caption {
+font-size: 90%;
+color:#fff;
+width: 231px;
+padding-top: 0;
+padding-left: 10px;
+margin-right: 5px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+text-align: right;
+margin-left: -5px;
+}
+.newpost .mask {
+    width:			250px;
+    height:			85px;
+    position:		absolute;
+    top:			170px;
+    left:			21px;
+    opacity:		1;	/* マスクを表示しない */
+    background-color:	rgba(0,0,0,0.4);
+    -webkit-transition:	all 0.6s ease;
+    transition:		all 0.6s ease;
+    border-radius: 0 0 10px 10px;
+    font-size: 15px;
+}
+
+.report-box{
+    display: flex;
+    height: 64px;
+}
+.report-box .owner-icon{
+    overflow: hidden;
+    position: relative;
+    float: left;
+    margin-top: 12px;
+    margin-right: 5px;
+    border-radius: 10px;
+}
+.report-box .forowner p{
+    padding-top: 20px;
+}
+
+.newpost .report{
+    padding: 3px 8px 4px 8px;
+    margin: 0 5px 0 5px;
+    height: 64px;
+    text-align: left;
+    font-size: small;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    background-color: rgb(15, 7, 85);
+    border-radius: 0 10px 10px 10px;
+    box-sizing: border-box;
+}
+.newpost .date{
+    font-size: 12px;
+    text-align: right;
+    margin-right: 5%;
+    margin-top: 10px;
+}
+  
+a:hover{
+    opacity: 0.7;
+}
+  
+
+.details{
+    width: 80%;
+    margin: 0 auto;
+    font-size: 30px;
+}
+
+
+.details .group-title{
+    background-color: rgb(2, 38, 38);
+    border-radius: 10px;
+}
+
+.details .card{
+    display: flex;
+    justify-content: left;
+    height: 350px;
+}
+
+.details .card .card_text{
+    text-align: left;
+    margin-left: 10%;
+    overflow-y: scroll;
+}
+.details .card_text p{
+    margin: 5px auto 10px 0;
+}
+
+.details .card_text .caption .info{
+    display: inline-block;
+    height: 40px;
+    
+}
+
+.details .group-title{
+    width: 100%;
+    margin: 0 auto;
+}
+.details .frontcover{
+    width: 350px;
+    height: 350px;
+    margin-top: 4px;
+    margin-left: 0;
+}
+
+.summary-btn{
+    margin-top: 20px;
+    font-size: 40px;
+}
+.thoughts-btn{
+    font-size: 40px;
+    margin-bottom: 40px
+}
+
+.summary{
+    width: 90%;
+    margin: 140px auto 0;
+    font-size: 20px;
+}
+
+.thoughts{
+    width: 90%;
+    margin: 50px auto 0;
+    font-size: 20px;
+}
+
+.contents-wrapper.active{
+	display: block;
+}
+
+/*チャットページで要約・感想を表示する*/
+.contents-wrapper{
+    border:solid 1px #f9f9f9;
+    padding: 2%;
+    text-align: left;
+    font-weight: normal;
+    display: none;
+}
+
+
+.table{
+    margin: 0 auto;
+}
+
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+table tr{
+border-bottom: solid 1px #eee;
+cursor: pointer;
+}
+
+table tr:hover{
+background-color: #02131b;
+}
+
+table th,table td{
+text-align: center;
+padding: 15px 0;
+padding-right: 20px;
+}
+
+table td.icon{
+background-size: 64px;
+background-position: left 5px center;
+background-repeat: no-repeat;
+padding-left: 30px;
+padding-right: 0px;
+}
+
+#id_friends{
+    display: table;
+    text-align: left;
+    margin: auto;
+}
+
+div.icon{
+    display: flex;
+    background-size: 64px;
+    background-position: left 5px center;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    padding-right: 0px;
+    height: 64px;
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative;
+}
+
+
+div.icon p.popover-title{
+    margin-left: 44px;
+}
+div.icon.right{
+    background-position: right;
+    margin-right: 4px;
+}
+.popover-container.right{
+    position: absolute;
+    text-align: right;
+    height: auto;
+    right: 58px;
+}
+.popover-container.right p.popover-title{
+    margin-right: 10px;
+}
+.popover-container.right p.popover-time{
+    margin-right: 10px;
+}
+.wrapper2.main p.popover-content{
+    display: inline-block;
+    background-color: rgb(15, 7, 85);
+    border-radius: 10px;
+    margin-left: 44px;
+    margin-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: auto;
+}
+.wrapper2.main p.popover-time{
+    display: block;
+    font-size: 10px;
+    padding-left: 44px; 
+    padding-top: 4px;
+}
+
+.wrapper2 .table{
+    font-size: 24px;
+}
+
+.popover{
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+
+.reply-wrapper{
+    height: auto;
+    width: 100%;
+    font-weight: normal;
+}
+
+.comment-area p.popover-content{
+    display: inline-block;
+    background-color: rgb(15, 7, 85);
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-right: 4px;
+    margin-left: 4px;
+    font-size: 30px;
+    height: auto;
+    width: auto;
+}
+.comment-area p.popover-time{
+    display: block;
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.flex{
+    display: flex;
+    justify-content: center;
+}
+
+.font-size-22px{
+    font-size: 22px;
+}
+
+.btn-delete{
+    display: inline-block;
+    position: absolute;
+    right: 2%;
+}
+
+/*チャットページで要約・感想を表示する*/
+.contents-wrapper{
+    border:solid 1px #f9f9f9;
+    padding: 2%;
+    text-align: left;
+    font-weight: normal;
+}
+tbody{
+    width: 80%;
+}
+
+#copyTarget {
+    width: 45vw;
+    font-size: 24px;
+}
+
+/*  input type="checkbox" 共通迂設定  */
+input[type="checkbox"]{
+    transform: scale(2.7);
+    margin-right: 15px;
+  }
+
+.content{
+    margin: 0 2vw;
+}
+
+.hidden{
+    display: none;
+}

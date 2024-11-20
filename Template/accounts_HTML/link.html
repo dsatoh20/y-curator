@@ -1,0 +1,67 @@
+{% load static %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Notification</title>
+<link rel="stylesheet" href='{% static "accounts_css/style.css" %}'/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="././static/accounts_js/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+<body>
+    <div class="loader-bg">
+        <div class="loader"></div>
+    </div>
+
+    <header class="header">
+        <nav class="header-nav">
+            <ul class="flex">
+				<div class="logo"><img alt="logo" src="/media/homepage_pics/logo_zako.png"></div>
+                <div class="header-nav-item"><a href="{% url 'home' %}"><img alt="home" src="/media/buttons/header/home.png"></a></div>
+				<div class="header-nav-item"><a href="{% url 'books:post' %}"><img alt="post" src="/media/buttons/header/post.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'forum' %}"><img alt="forum" src="/media/buttons/header/forum.png"></a></div>
+            	<div class="header-nav-item"><a href="{% url 'books:groups' %}"><img alt="group" src="/media/buttons/header/group.png"></a></div>
+                <div class="header-nav-item"><a href="{% url 'records' login_user.id %}"><img alt="portfolio" src="/media/buttons/header/portfolio.png"></a></div>
+                <div class="header-nav-prof">
+                    <a href="{% url 'profile' %}" class="prof-item"><img class="prof-pic" src="{{login_user.icon_image.url}}"></a>
+                </div>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper2 clearfix">
+        
+
+        <main class="main">
+            <header class="header-main">
+                <h2>Notification</h2>
+            </header>
+            <div class="container1-home">
+                <h3>LINE</h3>
+                <p>フレンドの新規投稿・コメントをLINEでお知らせします。</p>
+                <br>
+                <a href="https://lin.ee/3iDQFa9" target="_blank" rel="noopener noreferrer"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"></a>
+                <br>
+                <br>
+                <div><button class="unveil-button">Display your secret key</button></div>
+                <div class="hidden-value">{{login_user.secret_key}}</div>
+            </div>
+
+        </main>
+    </div>
+    <div class="footer">
+        <div class="footer-nav">
+            <ul>
+                <a href="{% url 'Logout' %}">logout</a>
+                <p>|</p>
+                <a href="{% url 'contact' %}">contact us</a>
+            </ul>
+        </div>
+        <div class="copyright-info">
+            <p>© 2024 Y | All Rights Reserved</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+{% load static %}
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Notification</title>
+<link rel="stylesheet" href='{% static "accounts_mobile_css/style.css" %}'/>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="././static/accounts_js/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link rel="icon" href="/media/homepage_pics/favicon.ico">
+</head>
+<body>
+    <div class="loader-bg">
+        <div class="loader"></div>
+    </div>
+
+    <header class="header">
+        <nav class="header-nav">
+            <ul>
+                <li class="header-nav-item home"><a href="{% url 'home' %}">home</a></li>
+                <li class="header-nav-item group"><a href="{% url 'books:groups' %}">group</a></li>
+                <li class="header-nav-item friend"><a href="{% url 'books:friend' %}">friend</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="wrapper2 clearfix">
+        <div class="nav">
+            <ul>
+                <a href="{% url 'records' login_user.id %}"><img class="logo-nav prof-pic" src="{{login_user.icon_image.url}}"></a>
+                <li class="nav-item"><a href="{% url 'records' login_user.id %}" class="login-user">{{request.user}}</a></li>
+                <a href="{% url 'Books' %}"><img class="logo-nav" src="/media/homepage_pics/books.png"></a>
+                <li class="nav-item"><a href="{% url 'Books' %}">Books</a></li>
+                <a href="{% url 'Movies' %}"><img class="logo-nav" src="/media/homepage_pics/movies.png"></a>
+                <li class="nav-item"><a href="{% url 'Movies' %}">Movies</a></li>
+                <a href="{% url 'Papers' %}"><img class="logo-nav" src="/media/homepage_pics/papers.png"></a>
+                <li class="nav-item"><a href="{% url 'Papers' %}">Papers</a></li>
+                <a href="{% url 'Articles' %}"><img class="logo-nav" src="/media/homepage_pics/articles.png"></a>
+                <li class="nav-item"><a href="{% url 'Articles' %}">Articles</a></li>
+            </ul>
+        </div>
+
+        <main class="main">
+            <header class="header-main">
+                <h2>Notification</h2>
+            </header>
+            <div class="container1-home">
+                <h3>LINE</h3>
+                <p>フレンドの新規投稿・コメントをLINEでお知らせします。</p>
+                <br>
+                <a href="https://lin.ee/3iDQFa9" target="_blank" rel="noopener noreferrer"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"></a>
+                <br>
+                <br>
+                <div><button class="unveil-button">Display your secret key</button></div>
+                <div class="hidden-value">{{login_user.secret_key}}</div>
+            </div>
+
+        </main>
+    </div>
+    <div class="footer">
+        <div class="footer-nav">
+            <ul>
+                <a href="{% url 'home' %}">home</a>
+                <p>|</p>
+                <a href="{% url 'Logout' %}">logout</a>
+                <p>|</p>
+                <a href="{% url 'link' %}">notification</a>
+                <p>|</p>
+                <a href="{% url 'contact' %}">contact us</a>
+            </ul>
+        </div>
+        <div class="copyright-info">
+            <p>© 2024 Y | All Rights Reserved</p>
+        </div>
+    </div>
+</body>
+</html>
