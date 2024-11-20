@@ -28,14 +28,12 @@ MEDIA_DIR = os.path.join(BASE_DIR,"media")
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-try:
+SECRET_KEY = os.environ.get("SECRET_KEY")
+if not SECRET_KEY:
     with open('Y/conf.json', 'r') as f:
         data = json.load(f)
     SECRET_KEY = data["SECRET_KEY"]
-    SQL_PASSWORD = data["SQL_PASSWORD"]
-except:
-    SECRET_KEY = os.environ.get("SECRET_KEY")
-    SQL_PASSWORD = os.environ.get("SQL_PASSWORD")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 # DEBUG = True

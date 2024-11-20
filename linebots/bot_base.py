@@ -1,15 +1,14 @@
 import urllib.request
-import json, requests, os
+import json, os
 
-try:
+CHANNEL_ACCESS_TOKEN = os.environ.get("CHANNEL_ACCESS_TOKEN")
+CHANNEL_SECRET = os.environ.get("CHANNEL_SECRET")
+if not CHANNEL_ACCESS_TOKEN:
     with open('linebots/conf.json', 'r') as f:
         data = json.load(f)
 
     CHANNEL_ACCESS_TOKEN = data["CHANNEL_ACCESS_TOKEN"]
     CHANNEL_SECRET = data["CHANNEL_SECRET"]
-except:
-    CHANNEL_ACCESS_TOKEN = os.environ.get("CHANNEL_ACCESS_TOKEN")
-    CHANNEL_SECRET = os.environ.get("CHANNEL_SECRET")
 """
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 

@@ -2,15 +2,15 @@ import requests
 import json, os
 from pprint import pprint
 
-try:
+ACCESS_TOKEN = os.environ.get("MOV_TOKEN")
+API_KEY = os.environ.get("MOV_KEY")
+if not ACCESS_TOKEN:
     with open('movies/conf.json', 'r') as f: # manage.pyの階層から実行する場合、こちら
         data = json.load(f)
 
     ACCESS_TOKEN = data["ACCESS_TOKEN"]
     API_KEY = data["API_KEY"]
-except:
-    ACCESS_TOKEN = os.environ.get("MOV_TOKEN")
-    API_KEY = os.environ.get("MOV_KEY")
+
 
 class TMDB:
     def __init__(self, token):
