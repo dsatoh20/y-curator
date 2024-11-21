@@ -35,11 +35,8 @@ if not SECRET_KEY:
     SECRET_KEY = data["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# DEBUG = True
-DEBUG = os.environ.get("DEBUG")
-if not DEBUG:
-    DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+
 
 ALLOWED_HOSTS = ['*']
 
