@@ -13,12 +13,12 @@ from rest_framework import status
 import json, os
 from cryptography.fernet import Fernet
 
-try:
+LINE_SECRET_KEY = os.environ.get("LINE_SECRET_KEY")
+if not LINE_SECRET_KEY:
     with open('linebots/conf.json', 'r') as f:
         data = json.load(f)
-    fernet = Fernet(data["SECRET_KEY"])
-except:
-    fernet = Fernet(os.environ.get("LINE_KEY"))
+        LINE_SECRET_KEY = data["LINE_SECRET_KEY"]
+fernet = Fernet(LINE_SECRET_KEY)
 
 homepage_link = "https://ycurator.net"
 comment_box_link = "https://docs.google.com/forms/d/e/1FAIpQLSffl6bNS5E_pVM_YToC1gJQkFDNA_494JuR3JOmLG87FI1axQ/viewform?usp=sf_link"
